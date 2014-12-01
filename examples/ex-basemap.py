@@ -273,12 +273,13 @@ for keyObject in keyObjects:
         keyObject["name"],
         xy, xytext = (-20, 20),
         textcoords = 'offset points', ha = 'right', va = 'bottom',
-        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+#        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+        bbox = dict(fc = 'yellow', alpha = 0.5),
         arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
 
     plt.text(xy[0], xy[1], keyObject["name"],fontsize=9,
                     ha='center',va='top',color='r',
-                    bbox = dict(boxstyle="round,pad=0.5",ec='None',fc=(1,1,1,0.5)))
+                    bbox = dict(ec='None',fc=(1,1,1,0.5)))
 
 plt.savefig('ex-basemap.png')
 plt.close()
