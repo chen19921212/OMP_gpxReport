@@ -8,7 +8,6 @@ class geoNamesCommon():
         pass
 
 class geoNames(geoNamesCommon, list):
-
     def __init__(self, geoPoints=None, geoNamesAdapter=None, *arg,**kw):
         geoNamesCommon.__init__(self)
         super(geoNames, self).__init__(*arg, **kw)
@@ -34,6 +33,6 @@ if __name__ == "__main__":
     gpx = gpxpy.parse(gpx_file)
     points = gpx.tracks[0].segments[0].points
 
-    geoNamesGpx = geoNames(points, _geoNamesAdapterCsvFile_geoPortal)
+    geoNamesGpx = geoNames(points, _geoNamesAdapterCsvFile_geoNames)
     for i, geoNameGpx in enumerate(geoNamesGpx):
         print(geoNameGpx)
