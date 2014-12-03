@@ -3,6 +3,17 @@ from examples import gpxpy
 from geoNamesAdapter import *
 from rtree import index
 
+class geoNameTestCommon():
+    def __init__(self):
+        pass
+
+class geoNameTest(geoNameTestCommon):
+    def __init__(self):
+        geoNameTestCommon.__init__(self)
+        pass
+
+
+
 class geoNamesCommon():
     def __init__(self):
         pass
