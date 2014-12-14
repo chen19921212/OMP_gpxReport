@@ -6,12 +6,16 @@ import sys as mod_sys
 import logging as mod_logging
 import math as mod_math
 
-import gpxpy as mod_gpxpy
+from examples import gpxpy
 
 #mod_logging.basicConfig(level=mod_logging.DEBUG,
 #                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 
-gpx_files = mod_sys.argv[1:]
+#gpx_files = mod_sys.argv[1:]
+
+#gpxFileName = "/home/ziemek/Projects/geotiler-master/examples/aa.gpx"
+gpxFileName = "../aa.gpx"
+
 
 def format_time(time_s):
     if not time_s:
@@ -20,7 +24,6 @@ def format_time(time_s):
     hours = mod_math.floor(minutes / 60.)
 
     return '%s:%s:%s' % (str(int(hours)).zfill(2), str(int(minutes % 60)).zfill(2), str(int(time_s % 60)).zfill(2))
-
 
 def print_gpx_part_info(gpx_part, indentation='    '):
     """
@@ -78,15 +81,15 @@ def print_gpx_info(gpx):
             print('    Track #%s, Segment #%s' % (track_no, segment_no))
             print_gpx_part_info(segment, indentation='        ')
 
-if not gpx_files:
-    print('No GPX files given')
-    mod_sys.exit(1)
+# if not gpx_files:
+#     print('No GPX files given')
+#     mod_sys.exit(1)
 
-for gpx_file in gpx_files:
-    try:
-        gpx = mod_gpxpy.parse(open(gpx_file))
-        print_gpx_info(gpx)
-    except Exception as e:
-        mod_logging.exception(e)
-        print('Error processing %s' % gpx_file)
-        mod_sys.exit(1)
+try:
+    gpx_file = open('../aa.gpx', 'r')
+    gpx = gpxpy.parse(gpx_file)
+    print_gpx_info(gpx)
+except Exception as e:
+    mod_logging.exception(e)
+    print('Error processing %s' % gpx_file)
+    mod_sys.exit(1)

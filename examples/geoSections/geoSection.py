@@ -33,15 +33,14 @@ class GeoSectionDataList(GeoSectionData, list):
 
 class GeoSectionGpxPoints(GeoSectionDataList):
     def __init__(self):
-        GeoSectionData.__init__(self)
-        super(geoNamesAdapter, self).__init__(*arg, **kw)
+        GeoSectionDataList.__init__(self)
 
     def __init__(self, gpxData=None):
-        GeoSectionData.__init__(self)
+        GeoSectionDataList.__init__(self)
         self.gpxData = gpxData
 
     def __init__(self, gpxFileName=None):
-        GeoSectionData.__init__(self)
+        GeoSectionDataList.__init__(self)
 
         gpxFile = open(gpxFileName, 'r')
         gpx = gpxpy.parse(gpxFile)
@@ -145,8 +144,10 @@ class GeoSectionViewer3d(GeoSectionViewerGpxData):
         subPlot.plot(longitudes, latitudes, elevations)
 #--Viewer-----------------------------------------------------------------------------------------------------------
 
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+import matplotlib.pyplot    as plt
+import matplotlib.gridspec  as gridspec
+
+import matplotlib.image     as mpimg
 
 # gs = gridspec.GridSpec(3, 3)
 # ax1 = plt.subplot(gs[0, :])
@@ -170,11 +171,13 @@ import matplotlib.gridspec as gridspec
 
 gs = gridspec.GridSpec(4, 1,
                        width_ratios=[1],
-                       height_ratios=[5,1,1,5]
+                       height_ratios=[5, 1, 1, 5]
                        )
 
 # gs.hspace = 0
 # gs.wspace = 0
+
+fig = plt.figure(figsize=(3, 3))
 
 ax_map = plt.subplot(gs[0])
 ax_prof = plt.subplot(gs[1])
@@ -187,15 +190,61 @@ ax_3d = plt.subplot(gs[3], projection='3d')
 # ax5 = fig.add_subplot(gs[2])
 #plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=0)
 
-gpxData = GeoSectionGpxPoints("aa.gpx")
-gpxViewerProfile = GeoSectionViewerProfile(ax_prof, gpxData)
-gpxViewerMap = GeoSectionViewerMap(ax_map, gpxData)
-gpx3dPath = GeoSectionViewer3d(ax_3d, gpxData)
+# gpxData = GeoSectionGpxPoints("aa.gpx")
+# gpxViewerProfile = GeoSectionViewerProfile(ax_prof, gpxData)
+# gpxViewerMap = GeoSectionViewerMap(ax_map, gpxData)
+# gpx3dPath = GeoSectionViewer3d(ax_3d, gpxData)
 
 #plt.axis('off')
 #plt.savefig("report.png")
 plt.savefig("report.pdf", format='pdf')
 plt.show()
+
+#-------------
+gpxData = GeoSectionGpxPoints("aa.gpx")
+
+fig1 = plt.figure()
+ax1 = fig1.add_subplot(1,1,1)
+gpxViewerProfile = GeoSectionViewerProfile(ax1, gpxData)
+fig1.savefig("fig1.png")
+
+fig2 = plt.figure()
+ax2 = fig2.add_subplot(1,1,1)
+gpxViewerMap = GeoSectionViewerMap(ax2, gpxData)
+fig2.savefig("fig2.png", bbox_inches='tight')
+
+fig3 = plt.figure()
+ax3 = fig3.add_subplot(1,1,1, projection='3d')
+gpx3dPath = GeoSectionViewer3d(ax3, gpxData)
+fig3.savefig("fig3.png")
+
+gs = gridspec.GridSpec(3, 1)
+fig4 = plt.figure(figsize=(10, 10))
+ax_im_1 = fig4.add_subplot(gs[0])
+ax_im_2 = fig4.add_subplot(gs[1])
+ax_im_3 = fig4.add_subplot(gs[2])
+img1 = mpimg.imread('fig1.png')
+img2 = mpimg.imread('fig2.png')
+img3 = mpimg.imread('fig3.png')
+ax_im_1.imshow(img1)
+ax_im_2.imshow(img2)
+ax_im_3.imshow(img3)
+fig4.savefig("fig4.png", bbox_inches='tight')
+
+import markdown
+
+html = markdown.markdown("asdasdasd")
+
+from string import Template
+
+fIn = open('gpxReport.tpl', 'r')
+template = Template(fIn.read())
+d = dict(Title = "Bieszczady", FigProfile = "Res/fig1.png", FigMap = "Res/fig2.png", Fig3d = "Res/fig3.png", GpxFile = "Res/bieszczady.gpx")
+output = template.substitute(d)
+print(output)
+fOut = open('/home/ziemek/Projects/pooleTestProj/input/gpxReport.md', 'w')
+fOut.write(output)
+fOut.close()
 
 # import matplotlib.pyplot as plt
 #
