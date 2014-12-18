@@ -3,25 +3,14 @@ from examples import gpxpy
 from geoNamesAdapter import *
 from rtree import index
 
-class geoNameTestCommon():
-    def __init__(self):
-        pass
-
-class geoNameTest(geoNameTestCommon):
-    def __init__(self):
-        geoNameTestCommon.__init__(self)
-        pass
-
-
-
-class geoNamesCommon():
-    def __init__(self):
+class geoNamesCommon(list):
+    def __init__(self, *arg, **kw):
+        super(geoNamesCommon, self).__init__(*arg, **kw)
         pass
 
 class geoNames(geoNamesCommon, list):
     def __init__(self, geoPoints=None, geoNamesAdapter=None, *arg,**kw):
         geoNamesCommon.__init__(self)
-        super(geoNames, self).__init__(*arg, **kw)
 
         if(geoPoints!=None and geoNamesAdapter!=None):
             rtreeIdx = index.Index()
@@ -35,6 +24,14 @@ class geoNames(geoNamesCommon, list):
                 if obj not in self:
                     self.append(obj)
 
+    def __str__(self):
+        str = ""
+
+        for i, geoNameGpx in enumerate(self):
+            str += "{0}.{1}, ".format(i, geoNameGpx["name"])
+
+        return str
+
 if __name__ == "__main__":
 
     _geoNamesAdapterCsvFile_geoNames = geoNamesAdapterCsvFile_geoNames("./PL.txt")
@@ -47,3 +44,5 @@ if __name__ == "__main__":
     geoNamesGpx = geoNames(points, _geoNamesAdapterCsvFile_geoNames)
     for i, geoNameGpx in enumerate(geoNamesGpx):
         print(geoNameGpx)
+
+    print(geoNamesGpx)
