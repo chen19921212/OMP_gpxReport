@@ -24,11 +24,19 @@ class geoNames(geoNamesCommon, list):
                 if obj not in self:
                     self.append(obj)
 
+    @property
+    def startPoint(self):
+        return self[0]["name"]
+
+    @property
+    def endPoint(self):
+        return self[len(self)-1]["name"]
+
     def __str__(self):
         str = ""
 
         for i, geoNameGpx in enumerate(self):
-            str += "{0}.{1}, ".format(i, geoNameGpx["name"])
+            str += "{0}.{1}\n\r".format(i, geoNameGpx["name"])
 
         return str
 
@@ -46,3 +54,6 @@ if __name__ == "__main__":
         print(geoNameGpx)
 
     print(geoNamesGpx)
+
+    print(geoNamesGpx.startPoint)
+    print(geoNamesGpx.endPoint)
