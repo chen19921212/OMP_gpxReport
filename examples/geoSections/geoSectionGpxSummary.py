@@ -127,5 +127,5 @@ class geoSectionGpxFileSummary(geoSectionGpxDataSummary):
             print("Error opening or parsing {0}: {1}.".format(gpxFileName, e))
 
 if __name__ == "__main__":
-    geoSectionGpxSummary = geoSectionGpxFileSummary(gpxFileName = '../aa.gpx')
+    geoSectionGpxSummary = geoSectionGpxFileSummary(gpxFileName = '../2014_11_17_Bieszczady.gpx')
     print(geoSectionGpxSummary)

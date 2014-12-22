@@ -62,7 +62,7 @@ latitudeMin = 360
 longitudeMax = 0
 longitudeMin = 360
 
-gpx_file = open('aa.gpx', 'r')
+gpx_file = open('2014_11_17_Bieszczady.gpx', 'r')
 gpx = gpxpy.parse(gpx_file)
 points = gpx.tracks[0].segments[0].points
 

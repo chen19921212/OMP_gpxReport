@@ -190,7 +190,7 @@ ax_3d = plt.subplot(gs[3], projection='3d')
 # ax5 = fig.add_subplot(gs[2])
 #plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=0)
 
-# gpxData = GeoSectionGpxPoints("aa.gpx")
+# gpxData = GeoSectionGpxPoints("2014_11_17_Bieszczady.gpx")
 # gpxViewerProfile = GeoSectionViewerProfile(ax_prof, gpxData)
 # gpxViewerMap = GeoSectionViewerMap(ax_map, gpxData)
 # gpx3dPath = GeoSectionViewer3d(ax_3d, gpxData)
@@ -201,7 +201,7 @@ plt.savefig("report.pdf", format='pdf')
 plt.show()
 
 #-------------
-gpxData = GeoSectionGpxPoints("aa.gpx")
+gpxData = GeoSectionGpxPoints("2014_11_17_Bieszczady.gpx")
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(1,1,1)
