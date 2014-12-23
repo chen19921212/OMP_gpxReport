@@ -112,7 +112,7 @@ class geoSectionGpxDataSummary(geoSectionGpxSummaryCommon):
         for gpxSegmentSummary in self["Segments"]:
             gpxSegmentSummary.indentation = gpxSegmentSummary.indentation + gpxSegmentSummary.indentation
             str += "\n\r"
-            str += gpxSegmentSummary.__str__()
+            str += gpxSegmentSummary.__str__
 
         return str
 
