@@ -14,7 +14,8 @@ class geoGpxMarkdownReportGenCommon():
 
 class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
     gpxInputFileName = "2014_11_17_Bieszczady.gpx"
-    targetDir = "/home/ziemek/Projects/pooleTestProj/input/"
+    targetReportDir = "/home/ziemek/Projects/pooleTestProj/input/"
+    targetReportResSubDir = "Res"
 
     def __init__(self):
         geoGpxMarkdownReportGenCommon.__init__(self)
@@ -38,16 +39,17 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         geoS_GpxSummary = geoSGpxSummary.geoSectionGpxFileSummary(gpxFileName = self.gpxInputFileName)
         print(geoS_GpxSummary)
 #--gpx raster map
-        geoS_RasterMap = geoSGpxRasterMap.geoSectionGpxRasterMap(gpxFile = self.gpxInputFileName, targetDir = os.path.join(self.targetDir, "Res"))
+        geoS_RasterMap = geoSGpxRasterMap.geoSectionGpxRasterMap(gpxFile = self.gpxInputFileName, targetDir = self.targetReportDir, targetResDir = self.targetReportResSubDir, geoMarkers = geoNamesGpx)
+        print(geoS_RasterMap)
 #--gpx report backend
         #"StartPoint", "EndPoint", "StartDate", "EndDate", "GeoPoints", "Stat",
 
         path, filename = os.path.split(self.gpxInputFileName)
         filename = os.path.splitext(filename)[0]
-        targetFileName = "{0}.png".format(filename)
-        targetFileNamePath = os.path.join(self.targetDir, targetFileName)
+        targetFileName = "{0}.md".format(filename)
+        targetFileNamePath = os.path.join(self.targetReportDir, targetFileName)
 
-        geoB_StrTemplToMd = geoBEnd.geoBackEndStrTemplToMd(templFileName='gpxReport.tpl', outputFileName=targetFileNamePath, Title = "Bieszczady", GpxFile = "Res/bieszczady.gpx", Stat = geoS_GpxSummary, StartPoint=geoNamesGpx.startPoint, EndPoint=geoNamesGpx.endPoint, StartDate=geoS_GpxSummary["Started"], EndDate=geoS_GpxSummary["Ended"], NameKeys=geoNamesGpx)
+        geoB_StrTemplToMd = geoBEnd.geoBackEndStrTemplToMd(templFileName='gpxReport.tpl', outputFileName=targetFileNamePath, Title = "Bieszczady", GpxFile = "Res/bieszczady.gpx", Stat = geoS_GpxSummary, StartPoint=geoNamesGpx.startPoint, EndPoint=geoNamesGpx.endPoint, StartDate=geoS_GpxSummary["Started"], EndDate=geoS_GpxSummary["Ended"], NameKeys=geoNamesGpx, RasterMap=geoS_RasterMap)
 
 if __name__ == "__main__":
     geoGpxMarkdownReportGen = geoGpxMarkdownReportGen()

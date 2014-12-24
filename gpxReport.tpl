@@ -8,6 +8,9 @@ menu-position: 4
 ###$StartDate - $EndDate
 
 
+$NameKeys
+
+
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <style> html, body, #map {height:100%; width:100%; padding:0px; margin:0px;}</style>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -47,5 +50,7 @@ map.addLayer(service);
 
 $Stat
 
+[<img src="$RasterMap" width="" height="100"/>]($RasterMap "64pixels")
 
-$NameKeys
+
+**[Raster Map]($RasterMap) (large file).**

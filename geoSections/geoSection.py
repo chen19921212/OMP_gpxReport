@@ -103,7 +103,7 @@ class GeoSectionViewerMap(GeoSectionViewerGpxData):
     def __init__(self):
         GeoSectionViewerGpxData.__init__(self)
 
-    def __init__(self, subPlot = None, gpxData = None):
+    def __init__(self, subPlot = None, gpxData = None, geoMarkers = None):
         GeoSectionViewerGpxData.__init__(self, subPlot, gpxData)
 
         latitudes, longitudes, elevations, timestamps = self.gpxData.getLatLongElevTs()
@@ -135,23 +135,25 @@ class GeoSectionViewerMap(GeoSectionViewerGpxData):
         map.scatter(longitudes, latitudes, c='red', s=scalledElevations, marker='o', cmap=cm.hot_r, alpha=0.4, latlon=True)
         map.plot(longitudes, latitudes, 'k', c='red', latlon=True)
         #--draw labels
-        # for keyObject in keyObjects:
-        #     print(keyObject)
+        if(geoMarkers is not None):
+            for geoMarker in geoMarkers:
+                xy = map(geoMarker["longitude"], geoMarker["latitude"])
         #
-        #     xy = map(keyObject["longitude"], keyObject["latitude"])
+        #         subPlot.annotate(
+        #             geoMarker["name"],
+        #             xy, xytext = (-20, 20),
+        #             textcoords = 'offset points', ha = 'right', va = 'bottom',
+        #     #        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+        #             bbox = dict(fc = 'yellow', alpha = 0.5),
+        #             arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
         #
-        #     plt.annotate(
-        #         keyObject["name"],
-        #         xy, xytext = (-20, 20),
-        #         textcoords = 'offset points', ha = 'right', va = 'bottom',
-        # #        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
-        #         bbox = dict(fc = 'yellow', alpha = 0.5),
-        #         arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
-        #
-        #     plt.text(xy[0], xy[1], keyObject["name"],fontsize=9,
-        #                     ha='center',va='top',color='r',
-        #                     bbox = dict(ec='None',fc=(1,1,1,0.5)))
+                subPlot.text(xy[0], xy[1], geoMarker["name"],fontsize=9,
+                                ha='center',va='top',color='r',
+#                                bbox = dict(ec='None',fc=(1,1,1,0.5)))
+                                bbox = dict(fc = 'yellow', alpha = 0.5))
+
 #--3d--
+
 class GeoSectionViewer3d(GeoSectionViewerGpxData):
     def __init__(self):
         GeoSectionViewerGpxData.__init__(self)
@@ -164,10 +166,10 @@ class GeoSectionViewer3d(GeoSectionViewerGpxData):
 #--Viewer-----------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
 
-    import matplotlib.pyplot    as plt
-    import matplotlib.gridspec  as gridspec
+    import matplotlib.pyplot as plt
+    import matplotlib.gridspec as gridspec
 
-    import matplotlib.image     as mpimg
+    import matplotlib.image as mpimg
 
     # gs = gridspec.GridSpec(3, 3)
     # ax1 = plt.subplot(gs[0, :])
@@ -229,7 +231,7 @@ if __name__ == "__main__":
     fig1.savefig("fig1.png")
 
     fig2 = plt.figure()
-    ax2 = fig2.add_subplot(1,1,1)
+    ax2 = fig2.add_subplot(1, 1, 1)
     gpxViewerMap = GeoSectionViewerMap(ax2, gpxData)
     fig2.savefig("fig2.png", bbox_inches='tight')
 
