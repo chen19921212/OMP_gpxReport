@@ -30,11 +30,17 @@ class geoBackEndStrTemplToMd(geoBackEndStrTempl):
     def __init__(self, templFileName, outputFileName, *arg, **kw):
         geoBackEndStrTempl.__init__(self, templFileName, *arg, **kw)
 
+        if("process" in self):
+            if(self["process"] == True):
+                self.process(outputFileName)
+
+    def process(self):
         output = self.strTemplate.substitute(self)
         print(output)
-        fOut = open(outputFileName, 'w')
+        fOut = open(self["outputFileName"], 'w')
         fOut.write(output)
         fOut.close()
+
 
 if __name__ == "__main__":
     # geoBackEnd = geoBackEnd(Title = "Bieszczady", FigProfile = "Res/fig1.png", FigMap = "Res/fig2.png", Fig3d = "Res/fig3.png", GpxFile = "Res/bieszczady.gpx")

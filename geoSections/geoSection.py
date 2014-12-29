@@ -65,6 +65,7 @@ class GeoSectionViewer(GeoSectionCommon):
     def __init__(self):
         GeoSectionCommon.__init__(self)
 
+
 class GeoSectionViewerMatplotLib(GeoSectionViewer):
     subPlot = None
     def __init__(self):
@@ -73,6 +74,7 @@ class GeoSectionViewerMatplotLib(GeoSectionViewer):
     def __init__(self, subPlot = None):
         GeoSectionViewer.__init__(self)
         self.subPlot = subPlot
+
 
 class GeoSectionViewerGpxData(GeoSectionViewerMatplotLib):
     gpxData = None
@@ -83,16 +85,34 @@ class GeoSectionViewerGpxData(GeoSectionViewerMatplotLib):
     def __init__(self, subplot, gpxData):
         GeoSectionViewerMatplotLib.__init__(self, subplot)
         self.gpxData = gpxData
+
+
 #--Profile--
 class GeoSectionViewerProfile(GeoSectionViewerGpxData):
     def __init__(self):
         GeoSectionViewerGpxData.__init__(self)
 
-    def __init__(self, subPlot = None, gpxData = None):
+    def __init__(self, subPlot = None, gpxData = None, geoMarkers = None):
         GeoSectionViewerGpxData.__init__(self, subPlot, gpxData)
 
         latitudes, longitudes, elevations, timestamps = self.gpxData.getLatLongElevTs()
         subPlot.fill_between(timestamps, elevations, facecolor='blue', alpha=0.5)
+        #--draw labels
+        if(geoMarkers is not None):
+            for geoMarker in geoMarkers:
+                print(geoMarker["time"])
+                print(geoMarker["latitude"])
+#                 xy = map(geoMarker["time"], geoMarker["latitude"])
+#                 subPlot.text(xy[0], xy[1], "{0}-{1} {2}".format(geoMarker["name"], geoMarker["elevation"], geoMarker["time"]),fontsize=9,
+#                                 ha='center',va='top',color='r',
+# #                                bbox = dict(ec='None',fc=(1,1,1,0.5)))
+#                                 bbox = dict(fc = 'yellow', alpha = 0.5))
+
+                subPlot.text(geoMarker["time"], geoMarker["elevation"], "{0}-{1} {2}".format(geoMarker["name"], geoMarker["elevation"], geoMarker["time"]),fontsize=9,
+                                ha='center',va='top',color='r',
+#                                bbox = dict(ec='None',fc=(1,1,1,0.5)))
+                                bbox = dict(fc = 'yellow', alpha = 0.5))
+
 #--Map--
 import geotiler
 from mpl_toolkits.basemap import Basemap
@@ -147,13 +167,13 @@ class GeoSectionViewerMap(GeoSectionViewerGpxData):
         #             bbox = dict(fc = 'yellow', alpha = 0.5),
         #             arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
         #
-                subPlot.text(xy[0], xy[1], geoMarker["name"],fontsize=9,
+                subPlot.text(xy[0], xy[1], "{0}-{1} {2}".format(geoMarker["name"], geoMarker["elevation"], geoMarker["time"]),fontsize=9,
                                 ha='center',va='top',color='r',
 #                                bbox = dict(ec='None',fc=(1,1,1,0.5)))
                                 bbox = dict(fc = 'yellow', alpha = 0.5))
 
-#--3d--
 
+#--3d--
 class GeoSectionViewer3d(GeoSectionViewerGpxData):
     def __init__(self):
         GeoSectionViewerGpxData.__init__(self)

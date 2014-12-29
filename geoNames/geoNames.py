@@ -35,6 +35,7 @@ class geoNames(geoNamesCommon, list):
                 obj = list(rtreeIdx.nearest((geoPointName["longitude"], geoPointName["latitude"], geoPointName["longitude"], geoPointName["latitude"]),objects=True))[0].object
                 geoPointName["elevation"] = obj.elevation
                 geoPointName["time"] = obj.time
+                geoPointName["gpxPoint"] = obj
 
     @property
     def startPoint(self):
