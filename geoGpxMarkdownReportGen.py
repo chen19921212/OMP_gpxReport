@@ -50,7 +50,7 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         geoS_RasterProfile = geoSGpxRasterProfile.geoSectionGpxRasterProfile(gpxData = gpxData, targetDir = self.targetReportDir, targetResDir = self.targetReportResSubDir, geoMarkers = geoNamesGpx)
         print(geoS_RasterProfile )
 #--gpx raster profile
-        geoS_Gallery = geoSGallery.geoSectionGallery()
+        geoS_Gallery = geoSGallery.geoSectionGallery(picturesRepository= "geoSections/Pic")
         print(geoS_Gallery)
 #--gpx report backend
         #"StartPoint", "EndPoint", "StartDate", "EndDate", "GeoPoints", "Stat",
@@ -75,6 +75,7 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         geoB_StrTemplToMd["NameKeys"]=geoNamesGpx
         geoB_StrTemplToMd["RasterMap"]=geoS_RasterMap
         geoB_StrTemplToMd["RasterProfile"]=geoS_RasterProfile
+        geoB_StrTemplToMd["PicGallery"]= geoS_Gallery
 
         geoB_StrTemplToMd.process()
 
