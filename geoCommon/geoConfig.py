@@ -1,5 +1,6 @@
 import os
-
+import shelve
+import configparser
 
 class GeoConfigCommon():
     def __init__(self):
@@ -7,10 +8,11 @@ class GeoConfigCommon():
 
 
 class GeoConfig(GeoConfigCommon):
-    geoReport = {"outputPath": "/home/ziemek/Projects/pooleTestProj/input/", "outputResSubPath": "highslide/images/"}
+#    geoReport = {"outputPath": "/home/ziemek/Projects/pooleTestProj/input/", "outputResSubPath": "highslide/images/"}
+    geoReport = {"outputPath": "/home/ziemek/Projects/pooleTestProj/input/", "outputResSubPath": "Res", "gallery": {"outputResSubPath": "highslide/images/"}}
 
     def __init__(self):
-        GeoConfigCommon.__init__()
+        GeoConfigCommon.__init__(self)
 
 
 if __name__ == "__main__":
@@ -23,3 +25,7 @@ if __name__ == "__main__":
     print(GeoConfig.geoReport["outputPath"])
     print(GeoConfig.geoReport["outputResSubPath"])
     print(os.path.join(GeoConfig.geoReport["outputPath"], GeoConfig.geoReport["outputResSubPath"]))
+
+    shelf = shelve.open("testConfig.cfg")
+    shelf["users"] = ["David", "Abraham"]
+    shelf.sync() # Save

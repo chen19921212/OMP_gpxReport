@@ -1,7 +1,11 @@
 import os
+import shutil
+
+from geoCommon.geoConfig import GeoConfig
 
 import geoBackEnd.geoBackEnd as geoBEnd
 import geoSections.geoSectionGpxSummary as geoSGpxSummary
+import geoSections.geoSectionMap as geoSMap
 import geoSections.geoSectionGpxRasterMap as geoSGpxRasterMap
 import geoSections.geoSectionGpxRasterProfile as geoSGpxRasterProfile
 import geoSections.geoSectionGallery as geoSGallery
@@ -16,12 +20,45 @@ class geoGpxMarkdownReportGenCommon():
         pass
 
 class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
-    gpxInputFileName = "2014_11_17_Bieszczady.gpx"
-    targetReportDir = "/home/ziemek/Projects/pooleTestProj/input/"
-    targetReportResSubDir = "Res"
+    genInSeparateFolder = True
+    reportTitle = ""
+    gpxInputFileName = ""
+    targetReportDir = ""
+    targetReportSubDir = ""
+    targetReportResSubDir = ""
 
-    def __init__(self):
+    def __init__(self, gpxInputFileName, genInSeparateFolder=True, reportTitle = ""):
         geoGpxMarkdownReportGenCommon.__init__(self)
+
+        self.genInSeparateFolder = genInSeparateFolder
+        self.gpxInputFileName = gpxInputFileName
+        self.targetReportDir = GeoConfig.geoReport["outputPath"]
+        self.targetReportResSubDir = GeoConfig.geoReport["outputResSubPath"]
+
+        if(reportTitle != ""):
+            self.reportTitle = reportTitle
+        else:
+            self.reportTitle = "Report for {0}".format(self.gpxInputFileName)
+
+        if(self.genInSeparateFolder != False):
+            head, tail = os.path.split(self.gpxInputFileName)
+            self.targetReportSubDir, tail = os.path.splitext(tail)
+            self.targetReportDir = os.path.join(self.targetReportDir, self.targetReportSubDir)
+
+    def process(self):
+#--pre process
+        try:
+            os.makedirs(self.targetReportDir)
+        except OSError:
+            pass
+        try:
+            os.makedirs(os.path.join(self.targetReportDir, self.targetReportResSubDir))
+        except OSError:
+            pass
+
+        resFullPath = os.path.join(self.targetReportDir, self.targetReportResSubDir)
+        shutil.copy2(self.gpxInputFileName, resFullPath)
+
 #--gpx file
         gpxFile = open(self.gpxInputFileName, "r")
         gpx = gpxpy.parse(gpxFile)
@@ -40,6 +77,9 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         print(geoNamesGpx.endPoint)
 #--gpx data
         gpxData = geoSection.GeoSectionGpxPoints(self.gpxInputFileName)
+#--gpx map
+        geoS_Map = geoSMap.geoSectionMap(gpxFroJsMap = os.path.join(self.targetReportResSubDir, self.gpxInputFileName))
+        print(geoS_Map)
 #--gpx summary
         geoS_GpxSummary = geoSGpxSummary.geoSectionGpxFileSummary(gpxFileName = self.gpxInputFileName)
         print(geoS_GpxSummary)
@@ -65,8 +105,8 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
 #        geoB_StrTemplToMd["process"]=True
         geoB_StrTemplToMd["templFileName"]='gpxReport.tpl'
         geoB_StrTemplToMd["outputFileName"]=targetFileNamePath
-        geoB_StrTemplToMd["Title"] = "Bieszczady"
-        geoB_StrTemplToMd["GpxFile"] = "Res/bieszczady.gpx"
+        geoB_StrTemplToMd["Title"] = self.reportTitle
+        geoB_StrTemplToMd["GpxFile"] = geoS_Map
         geoB_StrTemplToMd["Stat"] = geoS_GpxSummary
         geoB_StrTemplToMd["StartPoint"]=geoNamesGpx.startPoint
         geoB_StrTemplToMd["EndPoint"]=geoNamesGpx.endPoint
@@ -80,4 +120,5 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         geoB_StrTemplToMd.process()
 
 if __name__ == "__main__":
-    geoGpxMarkdownReportGen = geoGpxMarkdownReportGen()
+    geoGpxMarkdownReportGen = geoGpxMarkdownReportGen(gpxInputFileName = "2014-11-16_06-11-59.gpx", genInSeparateFolder=False)
+    geoGpxMarkdownReportGen.process()
