@@ -22,9 +22,15 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
     extensions = {".jpg", ".png", ".gif", ".JPG", ".PNG", ".GIF", ".Jpg", ".Png", ".Gif"}
     thumbSize = (120, 120)
 
-    def __init__(self, picturesRepository=None, *arg, **kw):
+    targetDir = ""
+    targetResDir = ""
+
+    def __init__(self, picturesRepository=None, targetDir="", targetResDir="", *arg, **kw):
         geoSectionGalleryCommon.__init__(self)
         super(geoSectionGallery, self).__init__(*arg, **kw)
+
+        self.targetDir = targetDir
+        self.targetResDir = targetResDir
 
         if (picturesRepository is not None):
             for root, dirs, files in os.walk(picturesRepository, topdown=False):
@@ -34,10 +40,7 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
                         thumbOutFile = os.path.splitext(inImgFile)[0] + ".thumbnail"
                         if thumbOutFile != inImgFile:
                             try:
-                                imCopyPath = os.path.join(GeoConfig.geoReport["outputPath"],
-                                                              GeoConfig.geoReport["outputResSubPath"])
-                                imThumbPath = os.path.join(GeoConfig.geoReport["outputPath"],
-                                                               GeoConfig.geoReport["outputResSubPath"])
+                                imCopyPath = imThumbPath = os.path.join(self.targetDir, self.targetResDir)
 
                                 try:
                                     os.makedirs(imCopyPath)
@@ -48,10 +51,8 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
                                 except OSError:
                                     pass
 
-                                imCopyNamePath = os.path.join(GeoConfig.geoReport["outputPath"],
-                                                              GeoConfig.geoReport["outputResSubPath"], inImgFile)
-                                imThumbNamePath = os.path.join(GeoConfig.geoReport["outputPath"],
-                                                               GeoConfig.geoReport["outputResSubPath"], thumbOutFile)
+                                imCopyNamePath = os.path.join(imCopyPath, inImgFile)
+                                imThumbNamePath = os.path.join(imThumbPath, thumbOutFile)
 
                                 im = Image.open(os.path.join(picturesRepository, inImgFile))
 
@@ -63,7 +64,7 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
                                 print(imThumbNamePath)
                                 im.save(imThumbNamePath, "JPEG")
 
-                                picThumb = {"ThumbPathName":os.path.join(GeoConfig.geoReport["outputResSubPath"], thumbOutFile), "PicPathName": os.path.join(GeoConfig.geoReport["outputResSubPath"], inImgFile)}
+                                picThumb = {"ThumbPathName":os.path.join(self.targetResDir, thumbOutFile), "PicPathName": os.path.join(self.targetResDir, inImgFile)}
                                 self.append(picThumb)
                             except IOError as e:
                                 print("cannot create thumbnail or copy for {0}".format(inImgFile))

@@ -2,7 +2,6 @@ import os
 
 from geoSections import geoSectionGpxRasterObject
 from geoSections import geoSection
-import matplotlib.pyplot as plt
 
 
 class geoSectionGpxRasterMapCommon(geoSectionGpxRasterObject.geoSectionGpxRasterObject):
@@ -21,7 +20,7 @@ class geoSectionGpxRasterMap(geoSectionGpxRasterMapCommon):
     def __init__(self, gpxData=None, targetDir="", targetResDir="", geoMarkers=None):
         geoSectionGpxRasterMapCommon.__init__(self, gpxData, targetDir, targetResDir, geoMarkers)
 
-        #TODO: Generate unique name.
+        # TODO: Generate unique name.
         filename = "geoSectionGpxRasterObject"
         self.targetFileName = "{0}_Map.png".format(filename)
         self.targetFileNamePath = os.path.join(self.targetDir, os.path.join(self.targetResDir, self.targetFileName))

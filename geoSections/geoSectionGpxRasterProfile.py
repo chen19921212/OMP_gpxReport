@@ -2,7 +2,6 @@ import os
 
 from geoSections import geoSectionGpxRasterObject
 from geoSections import geoSection
-import matplotlib.pyplot as plt
 
 
 class geoSectionGpxRasterProfileCommon():
