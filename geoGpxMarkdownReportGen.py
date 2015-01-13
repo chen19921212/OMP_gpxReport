@@ -50,6 +50,16 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         print("self.targetReportSubDir:    {0}".format(self.targetReportSubDir))
         print("self.targetReportResSubDir: {0}".format(self.targetReportResSubDir))
 
+    def gpxFileReportGen(self, gpxDirectory=None):
+        return ""
+
+    def gpxDataDirProcess(self, gpxDirectory=None):
+        if (gpxDirectory is not None):
+            for root, dirs, files in os.walk(gpxDirectory):
+                for file in files:
+                    if ((os.path.splitext(file)[1][1:]).lower() == "gpx"):
+                        print("processing: {0}".format(file))
+
     def process(self):
 #--pre process
         try:
@@ -126,4 +136,5 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
 
 if __name__ == "__main__":
     geoGpxMarkdownReportGen = geoGpxMarkdownReportGen(gpxInputFileName = "2014-11-16_06-11-59.gpx", genInSeparateFolder=True)
-    geoGpxMarkdownReportGen.process()
+#    geoGpxMarkdownReportGen.process()
+    geoGpxMarkdownReportGen.gpxReportGen("exampleData")
