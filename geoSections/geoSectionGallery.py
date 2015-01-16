@@ -4,17 +4,12 @@ import os
 from PIL import Image
 from string import Template
 
+
 class geoSectionGalleryCommon():
     outputPath = GeoConfig.geoReport["outputPath"]
     outputResSubPath = GeoConfig.geoReport["outputResSubPath"]
 
     def __init__(self):
-        pass
-
-
-class geoNamesCommon(list):
-    def __init__(self, *arg, **kw):
-        super(geoNamesCommon, self).__init__(*arg, **kw)
         pass
 
 
@@ -64,7 +59,8 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
                                 print(imThumbNamePath)
                                 im.save(imThumbNamePath, "JPEG")
 
-                                picThumb = {"ThumbPathName":os.path.join(self.targetResDir, thumbOutFile), "PicPathName": os.path.join(self.targetResDir, inImgFile)}
+                                picThumb = {"ThumbPathName": os.path.join(self.targetResDir, thumbOutFile),
+                                            "PicPathName": os.path.join(self.targetResDir, inImgFile)}
                                 self.append(picThumb)
                             except IOError as e:
                                 print("cannot create thumbnail or copy for {0}".format(inImgFile))
@@ -85,6 +81,7 @@ class geoSectionGallery(geoSectionGalleryCommon, list):
         outStr = tablePictureTemplate.substitute({"PicGalleryTable": outStr})
 
         return outStr
+
 
 if __name__ == "__main__":
     geoSectionGallery = geoSectionGallery(picturesRepository="./Pic")

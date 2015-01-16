@@ -9,6 +9,7 @@ import geoSections.geoSectionMap as geoSMap
 import geoSections.geoSectionGpxRasterMap as geoSGpxRasterMap
 import geoSections.geoSectionGpxRasterProfile as geoSGpxRasterProfile
 import geoSections.geoSectionGallery as geoSGallery
+import geoSections.geoSectionGpxFile as geoSGpxFile
 import geoSections.geoSection as geoSection
 import geoNames.geoNames as geoPoints
 import geoNames.geoNamesAdapter as geoPointsSet
@@ -50,15 +51,16 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
         print("self.targetReportSubDir:    {0}".format(self.targetReportSubDir))
         print("self.targetReportResSubDir: {0}".format(self.targetReportResSubDir))
 
-    def gpxFileReportGen(self, gpxDirectory=None):
-        return ""
+    def gpxFileReportGen(self, gpxFile=None):
+        if (gpxFile is not None):
+            if ((os.path.splitext(gpxFile)[1][1:]).lower() == "gpx"):
+                print("processing: {0}".format(gpxFile))
 
     def gpxDataDirProcess(self, gpxDirectory=None):
         if (gpxDirectory is not None):
             for root, dirs, files in os.walk(gpxDirectory):
                 for file in files:
-                    if ((os.path.splitext(file)[1][1:]).lower() == "gpx"):
-                        print("processing: {0}".format(file))
+                    self.gpxFileReportGen(file)
 
     def process(self):
 #--pre process
@@ -74,6 +76,7 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
 
         resFullPath = os.path.join(self.targetReportDir, self.targetReportSubDir, self.targetReportResSubDir)
         shutil.copy2(self.gpxInputFileName, resFullPath)
+
 #--gpx file
         gpxFile = open(self.gpxInputFileName, "r")
         gpx = gpxpy.parse(gpxFile)
@@ -137,4 +140,9 @@ class geoGpxMarkdownReportGen(geoGpxMarkdownReportGenCommon):
 if __name__ == "__main__":
     geoGpxMarkdownReportGen = geoGpxMarkdownReportGen(gpxInputFileName = "2014-11-16_06-11-59.gpx", genInSeparateFolder=True)
 #    geoGpxMarkdownReportGen.process()
-    geoGpxMarkdownReportGen.gpxReportGen("exampleData")
+
+#    geoGpxMarkdownReportGen.gpxDataDirProcess("exampleData")
+
+    geoSGpxFile = geoSGpxFile.geoSectionGpxFile(geoGpxMarkdownReportGen.gpxInputFileName, geoGpxMarkdownReportGen.targetReportDir, geoGpxMarkdownReportGen.targetReportSubDir, geoGpxMarkdownReportGen.targetReportResSubDir)
+    print("geoSGpxFile: {0}".format(geoSGpxFile))
+
